@@ -1,18 +1,8 @@
-from fastapi import FastAPI
-import numpy as np
-from io import BytesIO
 from ultralytics import SAM
 import rasterio
 from rasterio import features
 from pyproj import Transformer
 import numpy as np
-
-from fastapi import File, UploadFile, Form
-from PIL import Image as PILImage
-import json
-from rasterio.transform import Affine
-
-app = FastAPI()
 
 def process_image_to_geojson(image, points, label, crs, transform, checkpoint_path="sam2_s.pt"):    
     
@@ -56,29 +46,3 @@ def process_image_to_geojson(image, points, label, crs, transform, checkpoint_pa
     }
     
     return geojson 
-
-
-@app.post("/sam")
-async def sam_endpoint(
-    image: UploadFile = File(...),
-    points: str = Form(...),
-    label: str = Form(...),
-    crs: str = Form(...),
-    transform: str = Form(...),
-):
-    try:
-        # Read image
-        image_data = await image.read()
-        img = PILImage.open(BytesIO(image_data))
-        rgb = np.array(img)
-
-        # Parse points and transform
-        points = json.loads(points)
-        transform = Affine.from_gdal(*json.loads(transform))
-
-        # Process to GeoJSON
-        geojson = process_image_to_geojson(rgb, points, label, crs, transform)
-        return geojson
-
-    except Exception as e:
-        return {"error": str(e)}

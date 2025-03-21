@@ -1,0 +1,14 @@
+[project]
+name = "sam2fastapi"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115.11",
+    "pyproj>=3.7.1",
+    "python-multipart>=0.0.20",
+    "rasterio>=1.4.3",
+    "ultralytics>=8.3.94",
+    "uvicorn>=0.34.0",
+]
