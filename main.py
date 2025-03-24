@@ -14,7 +14,7 @@ async def root():
     return {"message": "Hello World"}
 
 
-@app.post("")
+@app.post("/")
 async def sam_endpoint(
     image: UploadFile = File(...),
     points: str = Form(...),
